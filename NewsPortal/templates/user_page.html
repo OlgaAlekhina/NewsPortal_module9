@@ -1,0 +1,19 @@
+{% extends 'default.html' %}
+
+{% block content %}
+<h2>Привет {{request.user.username}}!</h2>
+<div>
+    <p>
+    Вы находитесь на вашей личной странице портала NewsPortal.
+    </p>
+<p>
+<button> <a href="../news/">Смотреть последние новости</a> </button>
+</p>
+<p>
+<button> <a href="../accounts/logout/">Выйти</a> </button>
+{% if is_not_author %}
+    <button> <a href="upgrade/">Стать автором</a> </button>
+    {% endif %}
+</p>
+</div>
+{% endblock %}

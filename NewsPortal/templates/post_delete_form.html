@@ -1,0 +1,39 @@
+{% extends 'default.html' %}
+
+{% load custom_filters %}
+
+{% block title %} Delete news {% endblock title %}
+
+{% block content %}
+<h2>Вы действительно хотите удалить данную новость?</h2>
+<table>
+    <thead>
+        <th>
+            Заголовок
+        </th>
+        <th>
+            Дата публикации
+        </th>
+        <th>
+            Текст новости
+        </th>
+    </thead>
+    <tr>
+        <td>
+            {{ post.post_title|censor }}
+        </td>
+        <td>
+            {{ post.post_time|date:'d-M-Y H:i' }}
+        </td>
+        <td>
+            {{ post.post_text|truncatechars:50|censor }}
+        </td>
+    </tr>
+</table>
+
+<p>
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Подтвердить"></form>
+</p>
+{% endblock content %}

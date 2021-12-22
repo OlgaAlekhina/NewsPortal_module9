@@ -1,0 +1,54 @@
+{% extends 'default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+News category
+{% endblock title %}
+
+{% block content %}
+<h1>{{ cats_name | title }}</h1>
+
+<h3>Все новости</h3>
+Количество статей: {{ category_posts|length }}
+ <hr>
+    {% if category_posts %}
+        <table>
+            <tr>
+                <td>
+                    Заголовок
+                </td>
+                <td>
+                    Дата публикации
+                </td>
+                <td>
+                    Текст статьи
+                </td>
+            </tr>
+        {% for post in category_posts|dictsortreversed:"post_time" %}
+            <tr>
+                 <td>
+                    <a href="{% url 'news_detail' post.id %}">{{ post.post_title|censor }}</a>
+                    <a href="{% url 'news_edit' post.id %}"><u>Редактировать</u></a>
+
+                    <a href="{% url 'news_delete' post.id %}"><u> Удалить </u></a>
+                 </td>
+                <td>
+                    {{ post.post_time|date:'d-M-Y H:i' }}
+                </td>
+                <td>
+                    {{ post.post_text|truncatechars:50|censor }}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <h2>Нет новостей по вашему запросу!</h2>
+    {% endif %}
+<p>
+<button> <a href="subscribe_category">Подписаться на рассылку новостей в этой категории</a> </button>
+</p>
+{% endblock content %}
+
+
+

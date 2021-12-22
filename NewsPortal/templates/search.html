@@ -1,0 +1,75 @@
+{% extends 'default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Search
+{% endblock title %}
+
+{% block content %}
+
+<h1>Поиск новостей:</h1>
+<p>
+<form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form>
+</p>
+<hr>
+<h2>Результаты поиска:</h2>
+Новостей на странице: {{ news|length }}
+ <hr>
+    {% if news %}
+        <table>
+            <tr>
+                <td>
+                    Заголовок
+                </td>
+                <td>
+                    Дата публикации
+                </td>
+                <td>
+                    Текст статьи
+                </td>
+            </tr>
+        {% for new in news %}
+            <tr>
+                <td>
+                    {{ new.post_title|censor }}
+                </td>
+                <td>
+                    {{ new.post_time|date:'d-M-Y H:i' }}
+                </td>
+                <td>
+                    {{ new.post_text|truncatechars:50|censor }}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <h2>Нет результатов по вашему запросу!</h2>
+    {% endif %}
+<p>
+    {% if is_paginated %}
+
+    {% if page_obj.has_previous %}
+        <a href="?page=1{{ filter_params }}">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}{{ filter_params }}"><<<</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a>{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{ num }}{{ filter_params }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}{{ filter_params }}">>>></a>
+    <a href="?page={{ page_obj.paginator.num_pages }}{{ filter_params }}">Last</a>
+    {% endif %}
+
+{% endif %}
+</p>
+{% endblock content %}

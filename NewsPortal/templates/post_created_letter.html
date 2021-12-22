@@ -1,0 +1,17 @@
+{% extends 'default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+New post
+{% endblock title %}
+
+{% block content %}
+
+<h2>Здравствуй! В твоем любимом разделе появилась новая статья под названием: {{ post.post_title }}</h2>
+
+<p>Краткое содержание: {{ post.post_text|truncatechars:50 }}</p>
+
+<p>Подробнее читать: <a href= "{% url 'news_detail' post.id %} }}">здесь</a></p>
+
+{% endblock content %}
