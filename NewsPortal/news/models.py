@@ -100,6 +100,4 @@ class Comment(models.Model):
         self.comment_rating -= 1
         self.save()
 
-class Subscribers(models.Model):
-    subscriber = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscribed_users')
-    categories = models.ManyToManyField(Category)
+
