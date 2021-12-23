@@ -107,15 +107,8 @@ def upgrade_me(request):
 @login_required
 def subscribe_category(request, cats):
     user = request.user
-    user_id = user.id
     current_cat = Category.objects.get(id=cats)
-    subscr = Subscribers.objects.filter(subscriber_id=user_id)
-    if not subscr.exists():
-        sub = Subscribers.objects.create(subscriber=user)
-        sub.categories.add(current_cat)
-    else:
-        subscr2 = Subscribers.objects.get(subscriber_id=user_id)
-        subscr2.categories.add(current_cat)
+    current_cat.subscribers.add(user)
     return redirect(current_cat)
 
 @receiver(m2m_changed, sender=Post.categories.through)
