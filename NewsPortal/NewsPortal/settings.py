@@ -52,6 +52,8 @@ INSTALLED_APPS = [
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/user_page'
 
+DEFAULT_FROM_EMAIL = 'olga-olechka-5@yandex.ru'
+
 SITE_ID = 1
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
