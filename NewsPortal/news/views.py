@@ -8,10 +8,6 @@ from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
-from django.db.models.signals import m2m_changed
-from django.dispatch import receiver
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
 
 
 class NewsList(ListView):
@@ -110,23 +106,4 @@ def subscribe_category(request, cats):
     current_cat = Category.objects.get(id=cats)
     current_cat.subscribers.add(user)
     return redirect(current_cat)
-
-@receiver(m2m_changed, sender=Post.categories.through)
-def notify_subscribers(instance, action, pk_set, *args, **kwargs):
-    if action == 'post_add':
-        html_content = render_to_string(
-            'post_created_letter.html',
-            {'post': instance}
-        )
-        for pk in pk_set:
-            category = Category.objects.get(pk=pk)
-            recipients = [user.email for user in category.subscribers.all()]
-            msg = EmailMultiAlternatives(
-                subject=f'На сайте NewsPortal появилась новая статья: {instance.post_title}',
-                from_email='olga-olechka-5@yandex.ru',
-                to=recipients
-            )
-            msg.attach_alternative(html_content, "text/html")
-            msg.send()
-
 
