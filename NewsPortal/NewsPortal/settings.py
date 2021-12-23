@@ -54,6 +54,10 @@ LOGIN_REDIRECT_URL = '/user_page'
 
 SITE_ID = 1
 
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+ 
+APSCHEDULER_RUN_NOW_TIMEOUT = 25 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
