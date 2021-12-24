@@ -12,6 +12,6 @@ New post
 
 <p>Краткое содержание: {{ post.post_text|truncatechars:50 }}</p>
 
-<p>Подробнее читать: <a href= "{% url 'news_detail' post.id %} }}">здесь</a></p>
+<p>Подробнее читать: <a href= "{% url 'news_detail' post.id %}">здесь</a></p>
 
 {% endblock content %}
