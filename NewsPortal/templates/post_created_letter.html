@@ -1,17 +1,15 @@
 {% extends 'default.html' %}
 
-{% load custom_filters %}
-
 {% block title %}
 New post
 {% endblock title %}
 
 {% block content %}
 
-<h2>Здравствуй! В твоем любимом разделе появилась новая статья под названием: {{ post.post_title }}</h2>
+<h2>Здравствуйте! В вашем любимом разделе появилась новая статья под названием: {{ post.post_title }}</h2>
 
 <p>Краткое содержание: {{ post.post_text|truncatechars:50 }}</p>
 
-<p>Подробнее читать: <a href= "http://127.0.0.1:8000/news/{{ post.id }}">здесь</a></p>
+<p>Подробнее читать <a href= "http://127.0.0.1:8000/news/{{ post.id }}">здесь</a></p>
 
 {% endblock content %}
