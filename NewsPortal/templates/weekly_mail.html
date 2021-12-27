@@ -1,0 +1,22 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Weekly mailing
+{% endblock title %}
+
+{% block content %}
+
+<h2>Здравствуйте! За последнюю неделю в вашем любимом разделе появилось {{ posts|length }} новых статей:</h2>
+
+{% for post in posts %}
+
+    <p>Название:{{ post.post_title }}</p>
+
+    <p>Краткое содержание: {{ post.post_text|truncatechars:50 }}</p>
+
+    <p>Подробнее читать <a href= "http://127.0.0.1:8000/news/{{ post.id }}">здесь</a>.</p>
+
+    <hr>
+
+{% endfor %}
+{% endblock content %}
