@@ -15,7 +15,7 @@ def notify_subscribers(instance, action, pk_set, *args, **kwargs):
             category = Category.objects.get(pk=pk)
             recipients = [user.email for user in category.subscribers.all()]
             msg = EmailMultiAlternatives(
-                subject=f'рецепт курицы',
+                subject=f'На сайте NewsPortal появилась новая статья: {instance.post_title}',
                 from_email='olga-olechka-5@yandex.ru',
                 to=recipients
             )
