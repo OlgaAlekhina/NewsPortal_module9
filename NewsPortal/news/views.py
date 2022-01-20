@@ -74,7 +74,6 @@ class NewsDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'post_delete_form.html'
     queryset = Post.objects.all()
     success_url = '/news/'
-    form_class = PostForm
     permission_required = ('news.delete_post')
 
 class UserPageView(LoginRequiredMixin, TemplateView):
