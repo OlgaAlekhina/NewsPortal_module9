@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.core.paginator import Paginator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
@@ -23,12 +23,13 @@ class NewsDetail(DetailView):
     template_name = 'post.html'
     context_object_name = 'post'
 
+
 class NewsSearch(ListView):
     model = Post
     template_name = 'search.html'
     context_object_name = 'news'
     ordering = ['-post_time']
-    paginate_by = 2
+    paginate_by = 5
     queryset = Post.objects.order_by("pk")
 
     def get_filter(self):
@@ -60,9 +61,9 @@ class NewsCreateView(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     permission_required = ('news.add_post')
 
+
 class NewsUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'post_update_form.html'
-    form_class = PostForm
     form_class = PostForm
     permission_required = ('news.change_post')
 
@@ -70,11 +71,13 @@ class NewsUpdateView(PermissionRequiredMixin, UpdateView):
         id = self.kwargs.get('pk')
         return Post.objects.get(pk=id)
 
+
 class NewsDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'post_delete_form.html'
     queryset = Post.objects.all()
     success_url = '/news/'
     permission_required = ('news.delete_post')
+
 
 class UserPageView(LoginRequiredMixin, TemplateView):
     template_name = 'user_page.html'
@@ -84,10 +87,21 @@ class UserPageView(LoginRequiredMixin, TemplateView):
         context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
         return context
 
-def CategoryView(request, cats):
-    cats_name = Category.objects.get(id=cats).name
-    category_posts = Post.objects.filter(categories__id=cats)
-    return render(request, 'post_category.html', {'cats':cats, 'category_posts':category_posts, 'cats_name':cats_name})
+
+class CategoryListView(ListView):
+    context_object_name = 'category_posts'
+    template_name = 'post_category.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['cats'])
+        return Post.objects.filter(categories=self.category).order_by('-post_time')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = self.category
+        context['is_not_subscriber'] = not self.request.user.subscribed_categories.filter(id=self.kwargs['cats']).exists()
+        return context
 
 
 @login_required
@@ -99,10 +113,10 @@ def upgrade_me(request):
         Author.objects.create(author=user)
     return redirect('/user_page')
 
+
 @login_required
 def subscribe_category(request, cats):
     user = request.user
     current_cat = Category.objects.get(id=cats)
     current_cat.subscribers.add(user)
     return redirect(current_cat)
-
