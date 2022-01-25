@@ -12,16 +12,21 @@ News details
 {{ post.post_text|censor }}
 
 <p>Опубликовано: {{ post.post_time|date:'d-M-Y H:i' }}</p>
+<p>В категориях: {{ post.get_categories_names }}</p>
 
-<button><a href="{% url 'news_edit' post.id %}"><u>Редактировать</u></a></button>
+<p><button><a href="{% url 'news_edit' post.id %}"><u>Редактировать</u></a></button></p>
 
-<button><a href="{% url 'news_delete' post.id %}"><u> Удалить </u></a></button>
+<p><button><a href="{% url 'news_delete' post.id %}"><u> Удалить </u></a></button></p>
+
+<p>
+<button> <a href="{% url 'news' %}">На главную страницу</a> </button>
+</p>
+
+<button><a href="{% url 'user_page' %}"><u>В личный кабинет</u></a></button>
 
 {% if user.is_authenticated %}
-    <button> <a href="../accounts/logout/">Выйти</a> </button>
+   <p><button> <a href="{% url 'account_logout' %}">Выйти</a> </button></p>
 
 {% else %}
-    <button> <a href="../accounts/login/">Войти</a> </button>
+    <p><button> <a href="{% url 'account_login' %}">Войти</a> </button></p>
 {% endif %}
-
-{% endblock content %}
