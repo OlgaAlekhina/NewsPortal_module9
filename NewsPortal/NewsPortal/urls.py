@@ -22,6 +22,6 @@ urlpatterns = [
     path('pages/', include('django.contrib.flatpages.urls')),
     path('news/', include('news.urls')),
     path('accounts/', include('allauth.urls')),
-    path('user_page/', UserPageView.as_view()),
+    path('user_page/', UserPageView.as_view(), name='user_page'),
     path('user_page/upgrade/', upgrade_me, name='upgrade')
 ]
