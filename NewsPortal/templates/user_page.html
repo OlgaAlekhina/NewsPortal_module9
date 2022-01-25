@@ -7,10 +7,10 @@
     Вы находитесь на вашей личной странице портала NewsPortal.
     </p>
 <p>
-<button> <a href="../news/">Смотреть последние новости</a> </button>
+<button> <a href="{% url 'news' %}">Смотреть последние новости</a> </button>
 </p>
 <p>
-<button> <a href="../accounts/logout/">Выйти</a> </button>
+<button> <a href="{% url 'account_logout' %}">Выйти</a> </button>
 {% if is_not_author %}
     <button> <a href="upgrade/">Стать автором</a> </button>
     {% endif %}
