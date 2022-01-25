@@ -7,9 +7,8 @@ News category
 {% endblock title %}
 
 {% block content %}
-<h1>{{ cats_name | title }}</h1>
 
-<h3>Все новости</h3>
+<h3>{{ category.name|title }}</h3>
 Количество статей: {{ category_posts|length }}
  <hr>
     {% if category_posts %}
@@ -25,7 +24,7 @@ News category
                     Текст статьи
                 </td>
             </tr>
-        {% for post in category_posts|dictsortreversed:"post_time" %}
+        {% for post in category_posts %}
             <tr>
                  <td>
                     <a href="{% url 'news_detail' post.id %}">{{ post.post_title|censor }}</a>
@@ -46,9 +45,44 @@ News category
         <h2>Нет новостей по вашему запросу!</h2>
     {% endif %}
 <p>
+    {% if is_not_subscriber %}
+
 <button> <a href="subscribe_category">Подписаться на рассылку новостей в этой категории</a> </button>
+    {% endif %}
 </p>
+
+<hr>
+<p>
+<button> <a href="{% url 'news' %}">На главную страницу</a> </button>
+</p>
+
+<button><a href="{% url 'user_page' %}"><u>В личный кабинет</u></a></button>
+
+    {% if user.is_authenticated %}
+        <p><button> <a href="{% url 'account_logout' %}">Выйти</a> </button></p>
+    {% else %}
+        <p><button> <a href="{% url 'account_login' %}">Войти</a> </button></p>
+    {% endif %}
+
+{% if is_paginated %}
+
+    {% if page_obj.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a>{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">>>></a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+
+{% endif %}
 {% endblock content %}
-
-
-
