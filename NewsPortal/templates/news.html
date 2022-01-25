@@ -39,7 +39,9 @@ News
                     {{ new.post_time|date:'d-M-Y H:i' }}
                 </td>
                 <td>
-                    {{ new.get_categories_names }}
+                    {% for cat in new.categories.all %}
+                        <a href="{% url 'post-category' cat.id %}">{{ cat.name|title }}</a>
+                    {% endfor %}
                 </td>
                 <td>
                    {{ new.post_text|truncatechars:50|censor }}
@@ -51,13 +53,19 @@ News
         <h2>Новостей нет!</h2>
     {% endif %}
 <hr>
+
+ <button><a href="{% url 'news_create' %}"><u>Добавить новость</u></a></button>
+
+ <button><a href="{% url 'news_search' %}"><u>Поиск новостей</u></a></button>
+
+ <button><a href="{% url 'user_page' %}"><u>В личный кабинет</u></a></button>
+
     {% if user.is_authenticated %}
-        <button> <a href="../accounts/logout/">Выйти</a> </button>
+        <button> <a href="{% url 'account_logout' %}">Выйти</a> </button>
     {% else %}
-        <button> <a href="../accounts/login/">Войти</a> </button>
+        <button> <a href="{% url 'account_login' %}">Войти</a> </button>
     {% endif %}
 
-    <button><a href="{% url 'news_create' %}"><u>Добавить новость</u></a></button>
 <hr>
     <h3>Категории новостей:</h3>
     <p><a href="category/4/">Искусство</a></p>
