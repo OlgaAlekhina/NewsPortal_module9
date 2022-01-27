@@ -97,10 +97,11 @@ class CategoryListView(ListView):
         self.category = get_object_or_404(Category, id=self.kwargs['cats'])
         return Post.objects.filter(categories=self.category).order_by('-post_time')
 
-    def get_context_data(self, **kwargs):
+        def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['category'] = self.category
-        context['is_not_subscriber'] = not self.request.user.subscribed_categories.filter(id=self.kwargs['cats']).exists()
+        if self.request.user not in User.objects.filter(subscribed_categories__id=self.kwargs['cats']):
+            context['is_not_subscriber'] = True
         return context
 
 
