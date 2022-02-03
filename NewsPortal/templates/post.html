@@ -12,7 +12,9 @@ News details
 {{ post.post_text|censor }}
 
 <p>Опубликовано: {{ post.post_time|date:'d-M-Y H:i' }}</p>
-<p>В категориях: {{ post.get_categories_names }}</p>
+<p>В категориях: {% for cat in post.categories.all %}
+                        <a href="{% url 'post-category' cat.id %}">{{ cat.name|title }}</a>
+                    {% endfor %}</p>
 
 <p><button><a href="{% url 'news_edit' post.id %}"><u>Редактировать</u></a></button></p>
 
