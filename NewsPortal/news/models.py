@@ -71,6 +71,12 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return f'/news/{self.id}'
+    
+    def get_categories_names(self):
+        result = []
+        for category in self.categories.all():
+            result.append(category.name)
+        return ', '.join(result)
 
 
 class PostCategory(models.Model):
